@@ -55,9 +55,9 @@ export const GameForm = () => {
 
                         <option value="0">Select a game type</option>
                         {
-                            gameTypes.map(gt => (
-                                <option key={gt.id} value={gt.id}>
-                                    {gt.label}
+                            gameTypes.map(type => (
+                                <option key={type.id} value={type.id}>
+                                    {type.label}
                                 </option>
                             ))
                         }
