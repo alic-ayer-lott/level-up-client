@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { getEvents } from "./EventManager.js"
+import { getEvents, joinEvent } from "./EventManager.js"
 import { useHistory } from "react-router"
 
 export const EventList = (props) => {
