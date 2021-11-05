@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react"
 import { useHistory } from "react-router-dom"
-import { createEvent, getEvents, getGames } from "./EventManager.js"
+import { createEvent, getGames } from "./EventManager.js"
 
 
 export const EventForm = () => {
     const history = useHistory()
-    const [gameTypes, setGameTypes] = useState([])
+    const [games, setGames] = useState([])
 
     const [currentEvent, setEvent] = useState({
-        gameId: 1,
-        description: "",
-        date: "",
-        time: ""
+        // gameId: 1,
+        // description: "",
+        // date: "",
+        // time: ""
     })
 
     useEffect(() => {
-        getGameTypes()
-        .then((data) => setGameTypes(data))
+        getGames()
+        .then((data) => setGames(data))
     }, [])
 
     const changeEventState = (event) => {
@@ -35,15 +35,42 @@ export const EventForm = () => {
                     <select name="gameId" className="form-control"
                         value={ currentEvent.gameId }
                         onChange={ changeEventState }>
-                        <option value="0">Select a game...</option>
+                        <option>Select a game...</option>
                         {
                             games.map(game => (
                                 <option key={game.id} value={game.id}>
-                                    {game.label}
+                                    {game.title}
                                 </option>
                             ))
                         }
                     </select>
+                </div>
+            </fieldset>
+            <fieldset>
+                <div className="form-group">
+                    <label htmlFor="description">Description: </label>
+                    <input type="text" name="description" required autoFocus className="form-control"
+                        value={currentEvent.description}
+                        onChange={ changeEventState }
+                    />
+                </div>
+            </fieldset>
+            <fieldset>
+                <div className="form-group">
+                    <label htmlFor="date">Date: </label>
+                    <input type="date" name="date" required autoFocus className="form-control"
+                        value={currentEvent.date}
+                        onChange={ changeEventState }
+                    />
+                </div>
+            </fieldset>
+            <fieldset>
+                <div className="form-group">
+                    <label htmlFor="time">Time: </label>
+                    <input type="time" name="time" required autoFocus className="form-control"
+                        value={currentEvent.time}
+                        onChange={ changeEventState }
+                    />
                 </div>
             </fieldset>
 
@@ -52,6 +79,17 @@ export const EventForm = () => {
             <button type="submit"
                 onClick={evt => {
                     evt.preventDefault()
+
+                    const event = {
+                        gameId: parseInt(currentEvent.gameId),
+                        description: currentEvent.description,
+                        date: currentEvent.date,
+                        time: currentEvent.time
+                    }
+
+                    createEvent(event)
+                        .then(() => history.push("/events"))
+                    
 
                     // TODO: Call the createEvent function and pass it the event object
 
