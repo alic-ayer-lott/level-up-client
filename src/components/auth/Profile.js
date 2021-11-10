@@ -2,6 +2,7 @@ import userEvent from "@testing-library/user-event"
 import React, { useEffect, useState } from "react"
 import { getProfile } from "./ProfileManager.js"
 
+
 export const Profile = () => {
     const [profile, changeProfile] = useState({})
 
@@ -32,14 +33,21 @@ export const Profile = () => {
             <section className="profile__registrations">
                 <header className="registrations__header">
                     <h3>Events you are attending</h3>
+                    {
+                        profile?.attending?.map( (event) => {
+                            return <section> {event?.game?.title} </section>
+                        })
+                    }
                 </header>
-                <div className="registrations">
-                    {/* TODO: Map through the events the user is attending */}
-                </div>
             </section>
             <section className="profile__registrations">
                 <header className="registrations__header">
                     <h3>Events you are hosting</h3>
+                    {
+                        profile?.hosting?.map((event) => {
+                            return <section> {event?.game?.title} </section>
+                        })
+                    }
                 </header>
                 <div className="registrations">
                     {/* TODO: Map through the events the user is hosting */}
