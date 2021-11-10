@@ -20,7 +20,7 @@ export const Profile = () => {
                     <h3>Your Info</h3>
                 </header>
                 <div className="profile__name">
-                    Welcome: {profile?.gamer?.user?.first_name}
+                    Welcome: {profile?.gamer?.user?.first_name} {profile?.gamer?.user?.last_name}
                 </div>
                 <div className="profile__username">
                     Username: {profile?.gamer?.user?.username}
@@ -35,7 +35,7 @@ export const Profile = () => {
                     <h3>Events you are attending</h3>
                     {
                         profile?.attending?.map( (event) => {
-                            return <section> {event?.game?.title} </section>
+                            return <section> {event.game.title} on {event.date} at {event.time} </section>
                         })
                     }
                 </header>
@@ -45,7 +45,7 @@ export const Profile = () => {
                     <h3>Events you are hosting</h3>
                     {
                         profile?.hosting?.map((event) => {
-                            return <section> {event?.game?.title} </section>
+                            return <section> {event?.game?.title} on {event.date} at {event.time} </section>
                         })
                     }
                 </header>
