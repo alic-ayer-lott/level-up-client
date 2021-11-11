@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react"
-import { useHistory } from "react-router-dom"
-import { createGame, getGameTypes } from "./GameManager.js"
+import { useHistory, useParams } from "react-router-dom"
+import { createGame, getGameTypes, getGame, updateGameFetch } from "./GameManager.js"
 
 export const GameForm = () => {
     const history = useHistory()
+    const { gameId } = useParams()
     const [gameTypes, setGameTypes] = useState([])
 
     const [currentGame, setCurrentGame] = useState({
@@ -16,13 +17,40 @@ export const GameForm = () => {
 
     useEffect(() => {
         getGameTypes()
-        .then((data) => setGameTypes(data))
+            .then((data) => setGameTypes(data))
     }, [])
+
+    useEffect(() => {
+        if (gameId) {
+            getGame(gameId).then((gameData) => setCurrentGame(
+                {
+                    ...gameData,
+                    skillLevel: gameData.skill_level,
+                    numberOfPlayers: gameData.number_of_players,
+                    gameTypeId: gameData.game_type.id
+                }))
+        }
+    }, [gameId])
 
     const controlInputChange = (event) => {
         const newGameState = Object.assign({}, currentGame)
         newGameState[event.target.name] = event.target.value
         setCurrentGame(newGameState)
+    }
+
+    // const updateGame = (event) => {
+    //     event.preventDefault()
+    //     updateGameFetch(event).then(() => {
+    //         history.push('/')
+    //     })
+    // }
+
+    const saveGame = (event) => {
+        event.preventDefault()
+
+        createGame(currentGame).then(() => {
+            history.push('/games')
+        })
     }
 
     return (
@@ -31,7 +59,7 @@ export const GameForm = () => {
             <fieldset>
                 <div className="form-group">
                     <label htmlFor="title">Title: </label>
-                    <input type="text" name="title" required autoFocus className="form-control"
+                    <input type="text" name="title" value={currentGame.title} required autoFocus className="form-control"
                         value={currentGame.title}
                         onChange={controlInputChange}
                     />
@@ -40,7 +68,7 @@ export const GameForm = () => {
             <fieldset>
                 <div className="form-group">
                     <label htmlFor="maker">Maker: </label>
-                    <input type="text" name="maker" required autoFocus className="form-control"
+                    <input type="text" name="maker" value={currentGame.maker} required autoFocus className="form-control"
                         value={currentGame.maker}
                         onChange={controlInputChange}
                     />
@@ -49,7 +77,7 @@ export const GameForm = () => {
             <fieldset>
                 <div className="form-group">
                     <label htmlFor="gameTypeId">Game Type: </label>
-                    <select name="gameTypeId" className="form-control"
+                    <select name="gameTypeId" value={currentGame.gameTypeId} className="form-control"
                         value={currentGame.gameTypeId}
                         onChange={controlInputChange}>
 
@@ -67,7 +95,7 @@ export const GameForm = () => {
             <fieldset>
                 <div className="form-group">
                     <label htmlFor="numberOfPlayers">Number of Players: </label>
-                    <input type="text" name="numberOfPlayers" required autoFocus className="form-control"
+                    <input type="text" name="numberOfPlayers" value={currentGame.numberOfPlayers} required autoFocus className="form-control"
                         value={currentGame.numberOfPlayers}
                         onChange={controlInputChange}
                     />
@@ -76,7 +104,7 @@ export const GameForm = () => {
             <fieldset>
                 <div className="form-group">
                     <label htmlFor="skillLevel">Skill Level: </label>
-                    <input type="text" name="skillLevel" required autoFocus className="form-control"
+                    <input type="text" name="skillLevel" value={currentGame.skillLevel} required autoFocus className="form-control"
                         value={currentGame.skillLevel}
                         onChange={controlInputChange}
                     />
@@ -84,19 +112,22 @@ export const GameForm = () => {
             </fieldset>
 
             <button type="submit"
-                onClick={evt => {
-                    evt.preventDefault()
+                onClick={event => {
+                    event.preventDefault()
 
-                    const game = {
-                        maker: currentGame.maker,
-                        title: currentGame.title,
-                        numberOfPlayers: parseInt(currentGame.numberOfPlayers),
-                        skillLevel: parseInt(currentGame.skillLevel),
-                        gameTypeId: parseInt(currentGame.gameTypeId)
+                    // const game = {
+                    //     maker: currentGame.maker,
+                    //     title: currentGame.title,
+                    //     numberOfPlayers: parseInt(currentGame.numberOfPlayers),
+                    //     skillLevel: parseInt(currentGame.skillLevel),
+                    //     gameTypeId: parseInt(currentGame.gameTypeId)
+                    // }
+                    if (gameId) {
+                        updateGameFetch(currentGame)
+                            .then(() => history.push("/games"))
+                    } else {
+                        saveGame(event)
                     }
-
-                    createGame(game)
-                        .then(() => history.push("/games"))
                 }}
                 className="btn btn-primary">Create</button>
         </form>
