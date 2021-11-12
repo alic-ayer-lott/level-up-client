@@ -38,13 +38,6 @@ export const GameForm = () => {
         setCurrentGame(newGameState)
     }
 
-    // const updateGame = (event) => {
-    //     event.preventDefault()
-    //     updateGameFetch(event).then(() => {
-    //         history.push('/')
-    //     })
-    // }
-
     const saveGame = (event) => {
         event.preventDefault()
 
@@ -114,14 +107,6 @@ export const GameForm = () => {
             <button type="submit"
                 onClick={event => {
                     event.preventDefault()
-
-                    // const game = {
-                    //     maker: currentGame.maker,
-                    //     title: currentGame.title,
-                    //     numberOfPlayers: parseInt(currentGame.numberOfPlayers),
-                    //     skillLevel: parseInt(currentGame.skillLevel),
-                    //     gameTypeId: parseInt(currentGame.gameTypeId)
-                    // }
                     if (gameId) {
                         updateGameFetch(currentGame)
                             .then(() => history.push("/games"))
@@ -129,7 +114,7 @@ export const GameForm = () => {
                         saveGame(event)
                     }
                 }}
-                className="btn btn-primary">Create</button>
+                className="btn btn-primary">Save Game</button>
         </form>
     )
 }

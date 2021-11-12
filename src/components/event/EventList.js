@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useHistory } from "react-router-dom"
 import { getEvents, joinEvent, leaveEvent } from "./EventManager.js"
+import { Link } from "react-router-dom"
 
 export const EventList = () => {
     const history = useHistory()
@@ -33,6 +34,8 @@ export const EventList = () => {
                         <div>
                             {event.date} @ {event.time}
                         </div>
+                        <Link to={`event/update/${event.id}`}>Edit Event</Link>
+
                         {
                             event.joined
                                 ? <button className="btn btn-3"

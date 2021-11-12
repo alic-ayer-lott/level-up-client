@@ -32,6 +32,10 @@ export const ApplicationViews = () => {
                 <EventForm />
             </Route>
 
+            <Route exact path="/event/update/:eventId">
+                <EventForm />
+            </Route>
+
             <Route exact path="/profile">
                 <Profile />
             </Route>
