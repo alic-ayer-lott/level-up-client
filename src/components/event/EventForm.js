@@ -114,7 +114,7 @@ export const EventForm = () => {
 
                     // TODO: Once event is created, redirect user to event list
                 }}
-                className="btn btn-primary">Create Event</button>
+                className="btn btn-primary">Save Event</button>
         </form>
     )
 }
